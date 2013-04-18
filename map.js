@@ -1,10 +1,15 @@
 window.onload = init;
 
-var map;
-// a global variable
+var map = null
+  , geoJson = null;
+
+$.getJSON('wecomatracks.json', function(data) {
+  geoJson = data;
+  setupTracks(data);
+});
+
 
 function init() {
-
 	//creates a new map
 	map = new L.Map('map');
 
@@ -20,6 +25,8 @@ function init() {
 
 	//adds the background layer to the map
 	map.addLayer(oceanFloorLayer);
-	
 }
 
+function setupTracks(geoJson) {
+  L.geoJson(geoJson).addTo(map);
+}
