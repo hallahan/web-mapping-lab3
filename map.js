@@ -28,5 +28,32 @@ function init() {
 }
 
 function setupTracks(geoJson) {
-  L.geoJson(geoJson).addTo(map);
+  var trackStyle = {
+    "color": "black",
+    "weight": 2,
+    "opacity": 0.65
+  };
+
+  var highlightedStyle = {
+    "color": "#FFFF00",
+    "weight": 4,
+    "opacity": 0.8
+  };
+
+  L.geoJson(geoJson, {
+    style: trackStyle,
+    onEachFeature: function(feature, layer) {
+      layer.on({
+        // highlight feature
+        mouseover: function(e) {
+          layer.setStyle(highlightedStyle);
+        },
+        // reset highlight
+        mouseout:  function(e) {
+          layer.setStyle(trackStyle);
+        }
+      });
+    }
+  }).addTo(map);
 }
+
