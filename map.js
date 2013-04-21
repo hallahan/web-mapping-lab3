@@ -65,6 +65,11 @@ function init() {
 
 	//adds the background layer to the map
 	map.addLayer(oceanFloorLayer);
+
+  $("#menu").menu().on( "menuselect", function(event, ui) {
+    var item = $.trim(ui.item.text());
+    console.log(item);
+  });
 }
 
 function setupTracks(geoData) {

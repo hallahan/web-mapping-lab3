@@ -2,43 +2,88 @@
 <html>
 
 <head>
-	<title>Lab 3 - Nicholas Hallahan</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/vader/jquery-ui.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
-	<!--[if lte IE 8]>
+  <title>Lab 3 - Nicholas Hallahan</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/vader/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+  <!--[if lte IE 8]>
      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
- 	<![endif]-->
-	<link href="http://files.theoutpost.io/bootstrap/css/bootstrap.css" rel="stylesheet" />
+  <![endif]-->
+  <link href="http://files.theoutpost.io/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <link href="http://files.theoutpost.io/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
     <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
-	<div class="container-fluid">
-		<h1>GEO599: Web Mapping - Lab 3</h1>
-		
-		<div class="row-fluid">
-			<div class="span9">
-				<div id="map"></div>
-			</div>
-			<div class="span3">
-				<div class="well sidebar-nav">
-					hello
-				</div>
-			</div>
-		</div>
+  <div class="container-fluid">
+    <h1>GEO599: Web Mapping - Lab 3</h1>
+    
+    <div class="row-fluid">
+      <div class="span9">
+        <div id="map"></div>
+      </div>
+      <div class="span3">
+        <ul id="menu">
+          <li><a href="#">Participant</a>
+            <ul>
+              <li><a href="#">McGuire, Jeffrey</a></li>
+              <li><a href="#">Dever, Edward</a></li>
+              <li><a href="#">Gregg, Michael</a></li>
+              <li><a href="#">Sanford, Thomas</a></li>
+              <li><a href="#">Benitez-Nelson, Claudia</a></li>
+              <li><a href="#">Dickey, Tommy</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Port</a>
+            <ul>
+              <li><a href="#">Departure</a>
+                <ul>
+                <li><a href="#">Honolulu</a></li>
+                <li><a href="#">Newport</a></li>
+                <li><a href="#">San Diego</a></li>
+                <li><a href="#">San Francisco</a></li>
+                <li><a href="#">Seattle</a></li>
+              </ul>
+              </li>
+              <li><a href="#">Arrival</a>
+                <ul>
+                <li><a href="#">Honolulu</a></li>
+                <li><a href="#">Newport</a></li>
+                <li><a href="#">San Diego</a></li>
+                <li><a href="#">San Francisco</a></li>
+                <li><a href="#">Seattle</a></li>
+              </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="#">Cruise ID</a>
+            <ul>
+              <li><a href="#">W1008B</a></li>
+              <li><a href="#">W1007C</a></li>
+              <li><a href="#">W0906B</a></li>
+              <li><a href="#">W0905B</a></li>
+              <li><a href="#">W0807B</a></li>
+              <li><a href="#">W0605B</a></li>
+            </ul>
+          </li>
+        </ul>
+        <br/>
+        <div class="well">
+          Info of selected voyage...
+        </div>
+      </div>
+    </div>
 
-	    <footer>
-	    	Thu Apr 18, 2013, by <a href="http://theoutpost.io">Nicholas Hallahan</a> &nbsp;
-	   		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
-	    </footer>
-	</div>
-	
-	<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-	<script src="map.js"></script>
+      <footer>
+        Thu Apr 18, 2013, by <a href="http://theoutpost.io">Nicholas Hallahan</a> &nbsp;
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+      </footer>
+  </div>
+  
+  <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+  <script src="map.js"></script>
 </body>
 </html>
