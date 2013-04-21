@@ -1,17 +1,57 @@
 window.onload = init;
 
+// don't use these, they are just for your
+// introspective pleasure in the console!
 var map = null
-  , geoJson = null;
+  , geoModel = null;
 
-$.getJSON('wecomatracks.json', function(data) {
-  geoJson = data;
-  setupTracks(data);
-});
+
+function GeoModel(geoJsonObj) {
+  this.data = geoJsonObj;
+};
+
+GeoModel.prototype = {
+
+  /*
+    @return An array of features that have corresponding
+            value for a given property
+  */
+  queryByProperty: function(propertyType, propertyValue) {
+    var data = this.data;
+    var results = [];
+    if (data && data.features) {
+      var features = data.features;
+      for (i in features) {
+        var feat = features[i];
+        if (feat.properties && feat.properties[propertyType]) {
+          
+          // == makes sense, because we would want type coersion for a query
+          if (feat.properties[propertyType] == propertyValue) {
+            results.push(feat);
+          }
+        }
+      }
+    }
+    return results;
+  },
+
+  getData: function() {
+    return this.data;
+  }
+
+};
 
 
 function init() {
 	//creates a new map
 	map = new L.Map('map');
+
+  $.getJSON('wecomatracks.json', function(data) {
+    geoModel = new GeoModel(data);
+    // geoModel.queryByCruiseId('2');
+
+    setupTracks( geoModel.getData() );
+  });
 
 	//creates an ocean floor background layer
 	var esriOceanFloorURL = 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}';
@@ -27,7 +67,7 @@ function init() {
 	map.addLayer(oceanFloorLayer);
 }
 
-function setupTracks(geoJson) {
+function setupTracks(geoData) {
   var trackStyle = {
     "color": "black",
     "weight": 2,
@@ -40,7 +80,7 @@ function setupTracks(geoJson) {
     "opacity": 0.8
   };
 
-  L.geoJson(geoJson, {
+  L.geoJson(geoData, {
     style: trackStyle,
     onEachFeature: function(feature, layer) {
       layer.on({
@@ -51,6 +91,10 @@ function setupTracks(geoJson) {
         // reset highlight
         mouseout:  function(e) {
           layer.setStyle(trackStyle);
+        },
+        // feature is clicked
+        click: function(e) {
+          $("#sidebar").append('clicked...<br/>');
         }
       });
     }
