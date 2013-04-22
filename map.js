@@ -1,3 +1,8 @@
+// Nicholas Hallahan
+// GEO599 Web Mapping Lab 3
+// Sun Apr 21 2013
+
+
 window.onload = init;
 
 
@@ -148,8 +153,10 @@ function setupTracks(geoData) {
           originalLayer.clearLayers();
           selectedLayer = layer;
           layer.addTo(map);
-          showAllControl = new ShowAllControl();
-          map.addControl(showAllControl);
+          if (!showAllControl) {
+            showAllControl = new ShowAllControl();
+            map.addControl(showAllControl);
+          }
           displayFeatureProperties(layer.feature);
           map.fitBounds(layer.getBounds());
         }
@@ -162,7 +169,7 @@ function setupTracks(geoData) {
 
 var ShowAllControl = L.Control.extend({
     options: {
-        position: 'topright'
+      position: 'topright'
     },
 
     onAdd: function (map) {
@@ -199,9 +206,9 @@ function displayFeatureProperties(feature) {
   var prop = feature.properties;
   if (!prop) return;
 
-  if (prop.cruiseid) $('#cruise-id').html(prop.cruiseid);
-  if (prop.startdate) $('#start-date').html(prop.startdate);
-  if (prop.enddate) $('#end-date').html(prop.enddate);
+  if (prop.cruiseid)   $('#cruise-id').html(prop.cruiseid);
+  if (prop.startdate)  $('#start-date').html(prop.startdate);
+  if (prop.enddate)    $('#end-date').html(prop.enddate);
   if (prop.departport) $('#depart-port').html(prop.departport);
   if (prop.arriveport) $('#arrive-port').html(prop.arriveport);
   participants = prop.participants;
