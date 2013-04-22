@@ -4,7 +4,8 @@ window.onload = init;
 var map = null
   , geoModel = null
   , selectedLayer = null
-  , showAllControl = null;
+  , showAllControl = null
+  , originalLayer = null;
 
 
 function GeoModel(geoJsonObj) {
@@ -83,16 +84,31 @@ function init() {
 
     if (classList.contains('menu-item-participant')) {
       queriedFeatures = geoModel.queryByProperty('participants', item);
-      console.log(queriedFeatures);
     } else if (classList.contains('menu-item-departure')) {
       queriedFeatures = geoModel.queryByProperty('departport', item);
-      console.log(queriedFeatures);
     } else if (classList.contains('menu-item-arrival')) {
       queriedFeatures = geoModel.queryByProperty('arriveport', item);
-      console.log(queriedFeatures);
     } else if (classList.contains('menu-item-cruise-id')) {
       queriedFeatures = geoModel.queryByProperty('cruiseid', item);
-      console.log(queriedFeatures);
+    }
+
+    if (queriedFeatures) {
+      // NH TODO: Do this without global var
+      if (originalLayer) {
+        map.removeLayer(originalLayer);
+        originalLayer = null;
+      }
+      if (selectedLayer) {
+        map.removeLayer(selectedLayer);
+        selectedLayer = null;
+      }
+      var layer = setupTracks(queriedFeatures);
+      if (!showAllControl) {
+        showAllControl = new ShowAllControl();
+        map.addControl(showAllControl);
+      }
+      displayFeatureProperties();
+      map.fitBounds(layer.getBounds());
     }
 
   });
@@ -112,7 +128,7 @@ function setupTracks(geoData) {
     "opacity": 0.8
   };
 
-  var originalLayer = L.geoJson(geoData, {
+  originalLayer = L.geoJson(geoData, {
     style: trackStyle,
     onEachFeature: function(feature, layer) {
       layer.on({
@@ -140,6 +156,7 @@ function setupTracks(geoData) {
       });
     }
   }).addTo(map);
+  return originalLayer;
 }
 
 
@@ -162,6 +179,7 @@ var ShowAllControl = L.Control.extend({
           }
           setupTracks(geoModel.getData());
           map.removeControl(showAllControl);
+          showAllControl = null;
           displayFeatureProperties();
         });
         return container;
