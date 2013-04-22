@@ -3,12 +3,14 @@ window.onload = init;
 
 var map = null
   , geoModel = null
-  , selectedLayer = null;
+  , selectedLayer = null
+  , showAllControl = null;
 
 
 function GeoModel(geoJsonObj) {
   this.data = geoJsonObj;
 };
+
 
 GeoModel.prototype = {
 
@@ -70,10 +72,8 @@ function init() {
     var item = $.trim(ui.item.text());
     console.log(item);
   });
-
-  map.addControl(new ShowAllControl());
-
 }
+
 
 function setupTracks(geoData) {
   var trackStyle = {
@@ -95,27 +95,28 @@ function setupTracks(geoData) {
         // highlight feature
         mouseover: function(e) {
           layer.setStyle(highlightedStyle);
+          displayFeatureProperties(layer.feature);
         },
         // reset highlight
         mouseout:  function(e) {
           layer.setStyle(trackStyle);
+          if (!selectedLayer)
+            displayFeatureProperties(); //displays nothing  
         },
         // feature is clicked
         click: function(e) {
           originalLayer.clearLayers();
           selectedLayer = layer;
           layer.addTo(map);
-          var prop = layer.feature.properties;
-          console.log(prop);
+          showAllControl = new ShowAllControl();
+          map.addControl(showAllControl);
+          displayFeatureProperties(layer.feature);
           map.fitBounds(layer.getBounds());
         }
       });
     }
   }).addTo(map);
 }
-
-
-
 
 
 var ShowAllControl = L.Control.extend({
@@ -131,11 +132,41 @@ var ShowAllControl = L.Control.extend({
         container.innerHTML = "Show All"
         $(container).click(function(e) {
           // NH TODO: Do this without global var
-          if (selectedLayer)
-            map.removeLayer(selectedLayer)
+          if (selectedLayer) {
+            map.removeLayer(selectedLayer);
+            selectedLayer = null;
+          }
           setupTracks(geoModel.getData());
+          map.removeControl(showAllControl);
+          displayFeatureProperties();
         });
         return container;
     }
 });
 
+
+function displayFeatureProperties(feature) {
+  $('#cruise-id').html('&nbsp;');
+  $('#start-date').html('&nbsp;');
+  $('#end-date').html('&nbsp;');
+  $('#depart-port').html('&nbsp;');
+  $('#arrive-port').html('&nbsp;');
+  $('#participants').html('');
+
+  if (!feature) return;
+  var prop = feature.properties;
+  if (!prop) return;
+
+  if (prop.cruiseid) $('#cruise-id').html(prop.cruiseid);
+  if (prop.startdate) $('#start-date').html(prop.startdate);
+  if (prop.enddate) $('#end-date').html(prop.enddate);
+  if (prop.departport) $('#depart-port').html(prop.departport);
+  if (prop.arriveport) $('#arrive-port').html(prop.arriveport);
+  participants = prop.participants;
+  if (participants) {
+    for (var i in participants) {
+      var part = participants[i];
+      $('#participants').append(part + '<br/>');
+    }
+  }
+}
