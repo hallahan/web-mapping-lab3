@@ -26,9 +26,19 @@ GeoModel.prototype = {
       for (i in features) {
         var feat = features[i];
         if (feat.properties && feat.properties[propertyType]) {
-          
+          // participants are a list
+          if (propertyType === 'participants') {
+            var participants = feat.properties[propertyType];
+            for (var i in participants) {
+              var part = participants[i];
+              if (part == propertyValue) {
+                results.push(feat);
+                break;
+              }
+            }
+          }
           // == makes sense, because we would want type coersion for a query
-          if (feat.properties[propertyType] == propertyValue) {
+          else if (feat.properties[propertyType] == propertyValue) {
             results.push(feat);
           }
         }
@@ -50,8 +60,6 @@ function init() {
 
   $.getJSON('wecomatracks.json', function(data) {
     geoModel = new GeoModel(data);
-    // geoModel.queryByCruiseId('2');
-
     setupTracks( geoModel.getData() );
   });
 
@@ -70,7 +78,23 @@ function init() {
 
   $("#menu").menu().on( "menuselect", function(event, ui) {
     var item = $.trim(ui.item.text());
-    console.log(item);
+    var classList = ui.item.context.classList
+    var queriedFeatures = null;
+
+    if (classList.contains('menu-item-participant')) {
+      queriedFeatures = geoModel.queryByProperty('participants', item);
+      console.log(queriedFeatures);
+    } else if (classList.contains('menu-item-departure')) {
+      queriedFeatures = geoModel.queryByProperty('departport', item);
+      console.log(queriedFeatures);
+    } else if (classList.contains('menu-item-arrival')) {
+      queriedFeatures = geoModel.queryByProperty('arriveport', item);
+      console.log(queriedFeatures);
+    } else if (classList.contains('menu-item-cruise-id')) {
+      queriedFeatures = geoModel.queryByProperty('cruiseid', item);
+      console.log(queriedFeatures);
+    }
+
   });
 }
 
