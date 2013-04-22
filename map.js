@@ -1,9 +1,9 @@
 window.onload = init;
 
-// don't use these, they are just for your
-// introspective pleasure in the console!
+
 var map = null
-  , geoModel = null;
+  , geoModel = null
+  , selectedLayer = null;
 
 
 function GeoModel(geoJsonObj) {
@@ -70,6 +70,9 @@ function init() {
     var item = $.trim(ui.item.text());
     console.log(item);
   });
+
+  map.addControl(new ShowAllControl());
+
 }
 
 function setupTracks(geoData) {
@@ -85,7 +88,7 @@ function setupTracks(geoData) {
     "opacity": 0.8
   };
 
-  L.geoJson(geoData, {
+  var originalLayer = L.geoJson(geoData, {
     style: trackStyle,
     onEachFeature: function(feature, layer) {
       layer.on({
@@ -99,10 +102,40 @@ function setupTracks(geoData) {
         },
         // feature is clicked
         click: function(e) {
-          $("#sidebar").append('clicked...<br/>');
+          originalLayer.clearLayers();
+          selectedLayer = layer;
+          layer.addTo(map);
+          var prop = layer.feature.properties;
+          console.log(prop);
+          map.fitBounds(layer.getBounds());
         }
       });
     }
   }).addTo(map);
 }
+
+
+
+
+
+var ShowAllControl = L.Control.extend({
+    options: {
+        position: 'topright'
+    },
+
+    onAdd: function (map) {
+        // create the control container with a particular class name
+        var container = L.DomUtil.create('button', 'btn');
+
+        // ... initialize other DOM elements, add listeners, etc.
+        container.innerHTML = "Show All"
+        $(container).click(function(e) {
+          // NH TODO: Do this without global var
+          if (selectedLayer)
+            map.removeLayer(selectedLayer)
+          setupTracks(geoModel.getData());
+        });
+        return container;
+    }
+});
 
