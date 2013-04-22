@@ -1,0 +1,25 @@
+Nicholas Hallahan
+GEO599 Web Mapping Lab 3
+Sun Apr 21 2013
+
+====== EXTRA FUNCTIONALITY ==========
+
+1. Mousing over a cruise will show the properties about the cruise
+   on the info box on the right.
+
+2. Clicking on a the cruise will filter out all other cruises and 
+   fit the bounds of the map accordingly. Cruise properties for
+   that selected cruise will also be shown in the info box on the
+   right
+
+3. When something is selected, there is a "Show All" button on the
+   upper left corner of the Leaflet Map. Clicking on this will 
+   show the map with all of the features of the complete data set
+   again.
+
+4. Selecting a participant, arrival port, departure port, or cruise
+   ID using the menu widget provided will filter all of the matches
+   from the data set and only show those on the map. As with the
+   other extras, there is a show all button that will bring back
+   all of the cruises.
+   
